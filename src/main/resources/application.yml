@@ -1,14 +1,27 @@
 spring:
-  profiles:
-    active: local # ??? ??(H2)? ??
+  datasource:
+    url: jdbc:mysql://my-cloud-db.cxicmy6ymk7h.ap-northeast-2.rds.amazonaws.com:3306/assignment?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    username: admin
+    password: ${DB_PASSWORD}
+  jpa:
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        default_schema: assignment
+        globally_quoted_identifiers: true
 
-management:
-  endpoints:
-    web:
-      exposure:
-        include: health # ?? ?? ????? ?? ??
+  # 파일 업로드 용량 제한 해제 (3.25MB 파일 대응)
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
 
-logging:
-  level:
-    root: INFO
-    com.cloud.assignment: DEBUG # ?? ???? ??? ? ??? ?? ??
+cloud:
+  aws:
+    s3:
+      bucket: my-member-profile-bucket
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
